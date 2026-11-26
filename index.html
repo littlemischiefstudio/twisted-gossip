@@ -111,6 +111,14 @@ a.btn{text-decoration:none;display:inline-block}.ver{opacity:.55;margin-top:10px
 .finger{position:fixed;z-index:4;width:64px;height:64px;margin:-6px 0 0 -20px;left:75%;top:110%;filter:drop-shadow(0 5px 3px #0005);transition:left .7s ease-in-out,top .7s ease-in-out,opacity .3s;opacity:0;pointer-events:none}.finger.on{opacity:1}.finger svg{width:100%;height:100%;transition:transform .12s}.finger.press svg{transform:scale(.8)}
 .tips{background:#fffdf5;color:#3b2c3a;border-radius:6px;padding:10px 16px;text-align:left;width:100%;max-width:320px}.tips p{margin:6px 0;font-size:15px}
 .ov .btn:not(.big)[data-a=tutrep]{background:transparent;box-shadow:none;color:#fff;text-decoration:underline}
+/* v20: short screens (small iPhones, small Androids): compact gossip cards and spacing */
+@media (max-height:760px){
+#app:has(.crew){gap:4px;padding-top:max(8px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+#app:has(.crew) .lab{font-size:12px}#app:has(.crew) .ic{height:34px}#app:has(.crew) .hint{padding:6px 9px;font-size:12px}
+.crew{gap:6px}.crew .p{padding:4px 3px 5px;font-size:10.5px;line-height:1.1}.crew .p b{font-size:12px}.crew .p>svg{width:36px!important;height:36px!important}
+.crew .p .fr svg{width:16px;height:16px}.trail .dot{width:17px;height:17px}.tip{font-size:12px;min-height:0}
+#app:has(.crew) .row .btn{padding:6px 12px;font-size:14px}.tcap{min-height:44px}.tcap span{font-size:15px;padding:6px 12px}
+}
 </style></head><body><main id="app"></main>
 <script>
 // Everything you change before release lives here.
@@ -711,7 +719,7 @@ function tag(l,c,p){if(l.first===c)return `<i class="must first">${p[0]===c?'Tol
 // Shrink the story cards until everything fits on this phone screen (notches, short screens).
 function fit(){const cs=[...app.querySelectorAll('.now,.goal')];if(!cs.length||app.classList.contains('mapmode'))return;cs.forEach(c=>c.style.width='');
  const base=cs.map(c=>c.offsetWidth/parseFloat(getComputedStyle(c.parentElement).width)*100);let k=1;
- while(document.documentElement.scrollHeight>innerHeight+1&&k>.5){k-=.04;cs.forEach((c,i)=>c.style.width=base[i]*k+'%')}}
+ const mx=Math.max(...base);while(document.documentElement.scrollHeight>innerHeight+1&&mx*(k-.04)>=42){k-=.04;cs.forEach((c,i)=>c.style.width=base[i]*k+'%')}}
 addEventListener('resize',()=>fit());
 function draw(){clearTimeout(timer);const l=LEVELS[n],p=path(),s=run(start(l),p),goal=goalOf(l),last=p.slice(-1),done=won(l,p);
  const trail=[...l.path].map((_,i)=>p[i]?`<span class="dot on">${FACE[p[i]]}</span>`:'<span class="dot"></span>').join('');
